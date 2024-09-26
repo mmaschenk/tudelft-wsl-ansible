@@ -12,6 +12,6 @@
 - name: npirelay binary
   copy:
     dest: "{{user_home.stdout}}/.wsl"
-    src: npirelay.exe
+    src: npiperelay.exe
     owner: tud
     group: tud
