@@ -3,3 +3,4 @@
   roles:
     - irods
     - tud
+    - ssh-agent
