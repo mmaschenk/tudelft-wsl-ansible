@@ -1,10 +1,21 @@
 - name: Irods
   hosts: localhost
   tasks:
+    - name: apt key
+      ansible.builtin.get_url:
+        url: https://packages.irods.org/irods-signing-key.asc
+        dest: /etc/apt/trusted.gpg.d/irods-signing-key.asc
+        checksum: "sha256:0d4580bfd1a0c1c92036d76d4e3d59a9dfb01aaf8d80c3c3d2bc7796377b89b6"
+
+    - name: somerepo | apt source
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] https://packages.irods.org/apt/ {{ ansible_distribution_release }} main"
+        state: present
+        filename: renci-irods
+
     - name: Install software
       package:
         name:
           - irods-icommands 
           - irods-gridftp-client 
-          - python3-irodsclient
-        
+          - python3-irodsclient        
