@@ -1,3 +1,8 @@
+- name: Install socat
+  package:
+    name:
+      - socat
+
 - name: Add npirelay
   debug:
     msg: "Hello {{user_home.stdout}}"
