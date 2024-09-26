@@ -25,6 +25,9 @@
     - name: irods settings directory
       file:
         path: "{{user_home.stdout}}/.irods"
+        state: directory
+        owner: tud
+        group: tud
 
     - name: base irods environment file
       copy:
@@ -43,4 +46,16 @@
             "irods_ssl_verify_server": "hostname",
             "irods_zone_name": "tud"
           }
+        owner: tud
+        group: tud
+
+    - name: wsl config
+      copy:
+        dest: /etc/wsl.conf
+        content: |
+          [user]
+          default=tud
+
+          [network]
+          hostname=tudelft
           
