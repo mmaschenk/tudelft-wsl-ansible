@@ -1,0 +1,5 @@
+- name: Default WSL install
+  hosts: localhost
+  roles:
+    - irods
+    - tud
