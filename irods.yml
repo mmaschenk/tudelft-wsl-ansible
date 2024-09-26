@@ -1,0 +1,9 @@
+- name: Irods
+  tasks:
+    - name: Install software
+      package:
+        name:
+          - irods-icommands 
+          - irods-gridftp-client 
+          - python3-irodsclient
+        
