@@ -1,61 +1,58 @@
-- name: TU Delft default user
-  hosts: localhost
-  tasks:
-    - name: Create the user
-      user:
-        name: tud
-        state: present
-        groups: sudo
-        shell: /bin/bash
+- name: Create the user
+  user:
+    name: tud
+    state: present
+    groups: sudo
+    shell: /bin/bash
 
-    - name: Validate the sudoers file before saving
-      lineinfile:
-        path: /etc/sudoers
-        state: present
-        regexp: '^%sudo ALL='
-        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
-        validate: /usr/sbin/visudo -cf %s
+- name: Validate the sudoers file before saving
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%sudo ALL='
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+    validate: /usr/sbin/visudo -cf %s
 
-    - name: get user home directory
-      shell: >
-        getent passwd tud | awk -F: '{ print $6 }'
-      changed_when: false
-      register: user_home
+- name: get user home directory
+  shell: >
+    getent passwd tud | awk -F: '{ print $6 }'
+  changed_when: false
+  register: user_home
 
-    - name: irods settings directory
-      file:
-        path: "{{user_home.stdout}}/.irods"
-        state: directory
-        owner: tud
-        group: tud
+- name: irods settings directory
+  file:
+    path: "{{user_home.stdout}}/.irods"
+    state: directory
+    owner: tud
+    group: tud
 
-    - name: base irods environment file
-      copy:
-        dest: "{{user_home.stdout}}/.irods/irods_environment.json"
-        content: |
-          {
-            "irods_authentication_scheme": "pam",
-            "irods_client_server_negotiation": "request_server_negotiation",
-            "irods_client_server_policy": "CS_NEG_REQUIRE",
-            "irods_encryption_algorithm": "AES-256-CBC",
-            "irods_encryption_key_size": 32,
-            "irods_encryption_num_hash_rounds": 16,
-            "irods_encryption_salt_size": 8,
-            "irods_host": "irods.tudelft.nl",
-            "irods_port": 1247,
-            "irods_ssl_verify_server": "hostname",
-            "irods_zone_name": "tud"
-          }
-        owner: tud
-        group: tud
+- name: base irods environment file
+  copy:
+    dest: "{{user_home.stdout}}/.irods/irods_environment.json"
+    content: |
+      {
+        "irods_authentication_scheme": "pam",
+        "irods_client_server_negotiation": "request_server_negotiation",
+        "irods_client_server_policy": "CS_NEG_REQUIRE",
+        "irods_encryption_algorithm": "AES-256-CBC",
+        "irods_encryption_key_size": 32,
+        "irods_encryption_num_hash_rounds": 16,
+        "irods_encryption_salt_size": 8,
+        "irods_host": "irods.tudelft.nl",
+        "irods_port": 1247,
+        "irods_ssl_verify_server": "hostname",
+        "irods_zone_name": "tud"
+      }
+    owner: tud
+    group: tud
 
-    - name: wsl config
-      copy:
-        dest: /etc/wsl.conf
-        content: |
-          [user]
-          default=tud
+- name: wsl config
+  copy:
+    dest: /etc/wsl.conf
+    content: |
+      [user]
+      default=tud
 
-          [network]
-          hostname=tudelft
-          
+      [network]
+      hostname=tudelft
+      
