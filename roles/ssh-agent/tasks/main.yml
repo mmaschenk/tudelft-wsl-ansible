@@ -1,3 +1,17 @@
 - name: Add npirelay
   debug:
-    msg: "Hello"
+    msg: "Hello {{user_home.stdout}}"
+
+- name: wsl stuff directory
+  file:
+    path: "{{user_home.stdout}}/.wsl"
+    state: directory
+    owner: tud
+    group: tud
+
+- name: npirelay binary
+  copy:
+    dest: "{{user_home.stdout}}/.wsl"
+    source: npirelay.exe
+    owner: tud
+    group: tud
