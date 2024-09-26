@@ -1,0 +1,9 @@
+- name: TU Delft default user
+  hosts: localhost
+  tasks:
+    - name: Create the user
+      user:
+        name: tud
+        state: present
+        groups: sudo
+        shell: /bin/bash
