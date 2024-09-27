@@ -27,6 +27,8 @@
     path: "{{user_home.stdout}}/.ssh"
     state: directory
     mode: "0700"
+    owner: tud
+    group: tud
 
 - name: bashrc modification
   blockinfile:
