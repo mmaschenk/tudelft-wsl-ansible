@@ -22,6 +22,12 @@
     group: tud
     mode: preserve
 
+- name: be sure that .ssh directory exists
+  file:
+    path: "{{user_home.stdout}}/.ssh"
+    state: directory
+    mode: "0700"
+
 - name: bashrc modification
   blockinfile:
     path: "{{user_home.stdout}}/.bashrc"
