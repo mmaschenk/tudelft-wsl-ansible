@@ -14,12 +14,13 @@
     owner: tud
     group: tud
 
-- name: npirelay binary
+- name: npiperelay binary
   copy:
     dest: "{{user_home.stdout}}/.wsl"
     src: npiperelay.exe
     owner: tud
     group: tud
+    mode: preserve
 
 - name: bashrc modification
   blockinfile:
