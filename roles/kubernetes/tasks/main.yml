@@ -5,7 +5,7 @@
 
 - name: kubernetes apt source
   ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ {{ ansible_distribution_release }} main"
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
     state: present
     filename: renci-irods
 
