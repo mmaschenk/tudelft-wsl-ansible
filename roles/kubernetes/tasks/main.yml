@@ -1,0 +1,15 @@
+- name: kubernetes apt key
+  ansible.builtin.get_url:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    dest: /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+
+- name: kubernetes apt source
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ {{ ansible_distribution_release }} main"
+    state: present
+    filename: renci-irods
+
+- name: Install kubernetes software
+  package:
+    name:
+      - kubectl
