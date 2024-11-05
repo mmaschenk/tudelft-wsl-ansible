@@ -1,16 +1,19 @@
-- name: kubernetes apt key
+- name: get current kubectl version
+  ansible.builtin.uri:
+    url: https://dl.k8s.io/release/stable.txt
+    return_content: true
+  register: current_version
+
+- name: get sha checksum
+  ansible.builtin.uri:
+    url: https://dl.k8s.io/release/{{current_version.content}}//bin/linux/amd64/kubectl.sha256
+    return_content: true
+  register: sha_checksum
+
+- name: get current kubectl binary
   ansible.builtin.get_url:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    dest: /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+    url: https://dl.k8s.io/release/{{current_version.content}}//bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    checksum: "sha256:{{sha_checksum.content}}"
+    mode: '0755'
 
-- name: kubernetes apt source
-  ansible.builtin.apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main"
-    state: present
-    filename: kubernetes.list
-
-- name: Install kubernetes software
-  package:
-    name:
-      - kubectl
-    update_cache: true
