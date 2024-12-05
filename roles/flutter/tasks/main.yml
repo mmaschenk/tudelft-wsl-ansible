@@ -1,0 +1,17 @@
+- name: Install nvm
+  ansible.builtin.shell: >
+    curl -o- https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+    warn: false
+  become: yes
+  become_user: tud      
+- name: Install flutter
+  unarchive:
+    src: https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz
+    dest: /usr/local
+    owner: root
+    group: root
+    remote_src: yes
+    force: no
+    creates: "/usr/local/flutter
