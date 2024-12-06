@@ -1,11 +1,21 @@
-- name: Install nvm
-  ansible.builtin.shell: >
-    curl -o- https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz
-  args:
-    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
-    warn: false
-  become: yes
-  become_user: tud      
+- name: Install flutter required software
+  package:
+    name:
+      - curl
+      - git
+      - unzip
+      - xz-utils
+      - zip
+      - libglu1-mesa
+      - libc6:amd64
+      - libstdc++6:amd64
+      - lib32z1
+      - libbz2-1.0:amd64
+      - clang
+      - cmake
+      - ninja-build
+      - pkg-config
+      - libgtk-3-dev
 - name: Install flutter
   unarchive:
     src: https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz
@@ -13,5 +23,35 @@
     owner: root
     group: root
     remote_src: yes
-    force: no
-    creates: "/usr/local/flutter
+    creates: /usr/local/flutter
+- name: Add to path
+  copy:
+    dest: /etc/profile.d/flutter-path.sh
+    content: 'PATH=/usr/local/flutter/bin:$PATH'
+- name: Check i386 architecture for Android studio
+  shell: dpkg --print-foreign-architectures | grep i386
+  register: result_i386_check
+  changed_when: result_i386_check.rc == 1
+  failed_when: result_i386_check.rc > 1
+- name: Enable i386 architecture for Android studio
+  command: dpkg --add-architecture i386
+  when: result_i386_check.rc == 1
+- name: Install android-studio required software
+  package:
+    name:
+      - libc6:i386
+      - libncurses5:i386
+      - libstdc++6:i386
+      - lib32z1
+      - libbz2-1.0:i386
+      - libpulse0
+      - libnss3
+      - libxkbfile1
+- name: Install android studio
+  unarchive:
+    src: https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.2.1.12/android-studio-2024.2.1.12-linux.tar.gz
+    dest: /usr/local
+    owner: root
+    group: root
+    remote_src: yes
+    creates: /usr/local/android-studio
