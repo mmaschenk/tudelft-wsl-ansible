@@ -47,6 +47,7 @@
       - libpulse0
       - libnss3
       - libxkbfile1
+    update_cache: true
 - name: Install android studio
   unarchive:
     src: https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2024.2.1.12/android-studio-2024.2.1.12-linux.tar.gz
