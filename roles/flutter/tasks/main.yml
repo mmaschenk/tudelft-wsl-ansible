@@ -55,3 +55,7 @@
     group: root
     remote_src: yes
     creates: /usr/local/android-studio
+- name: Add studio to path
+  copy:
+    dest: /etc/profile.d/android-studio-path.sh
+    content: 'PATH=/usr/local/android-studio/bin:$PATH'
