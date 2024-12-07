@@ -20,8 +20,8 @@
   unarchive:
     src: https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.5-stable.tar.xz
     dest: /usr/local
-    owner: root
-    group: root
+    owner: tud
+    group: tud
     remote_src: yes
     creates: /usr/local/flutter
 - name: Add to path
@@ -59,4 +59,6 @@
 - name: Add studio to path
   copy:
     dest: /etc/profile.d/android-studio-path.sh
-    content: 'PATH=/usr/local/android-studio/bin:$PATH'
+    content: |
+      PATH=/usr/local/android-studio/bin:~/Android/Sdk/platform-tools:$PATH
+      export JAVA_HOME=/usr/local/android-studio/jbr
